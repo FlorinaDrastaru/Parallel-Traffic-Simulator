@@ -1,0 +1,85 @@
+DRASTARU FLORINA-CRISTINA 335CA
+
+APD - TEMA 2
+
+In rezolvarea acestei teme, am pornit de la scheletul pus la dispozitie.
+Pentru fiecare task, mi-am creat o clasa noua, specifica intersectiei respective.
+In IntersectionFactory mi-am creat cate o instanta din fiecare tip de implementare
+a interfetei Intersection.
+In ReaderHandlerFactory am implementat citirea din fisier.
+In IntersectionHandlerFactory am realizat implementarea efectiva a task-urilor.
+
+
+TASK 1
+Fiecare masina ajunge la semafor, asteapta un timp specific(actiune simulata cu sleep) si apoi trece mai departe. 
+
+TASK 2
+Am creat clasa SimpleRoundabout.
+Fiecare masina ajunge la sens si apoi asteapta.
+Folosesc un semafor cu n permisiuni pentru a controla numarul maxim de masini 
+care pot intra in sensul giratoriu. Cu sleep simulez timpul petrecut de fiecare
+masina pentru a traversa sensul giratoriu. Apoi, masina paraseste sensul.
+
+TASK 3
+Am creat clasa SimpleStrict1Roundabout.
+Folosesc un semafor pentru a limita accesul 
+la o masina pe sens.
+
+TASK 4
+Am creat clasa SimpleStrictXRoundabout.
+Masinile ajung la sensul giratoriu si asteapta. Aici folosesc o bariera pentru ca 
+toate thread-urile sa astepte. Am creat un array de semafoare pentru a putea 
+limita accesul masinilor pe sens la numarul maxim citit din fisier. Masinile 
+sunt selectate, astept cu o bariera finalizarea operatiei, ele intra in sensul giratoriu, 
+petrec acolo t milisecunde, il parasesc. In final, folosesc o bariera pentru a astepta ca 
+toate masinile din runda respectiva sa paraseasca sensul giratoriu.
+
+TASK 5
+Am creat clasa SimpleMaxXRoundabout.
+Similar task-urilor anterioare, folosesc un semafor pentru a limita numarul de masini 
+ce vin dintr-o directie si o bariera pentru a astepta ca toate masinile intrate in sens 
+sa il paraseasca pana sa intre o runda noua.
+
+TASK 6
+Am creat clasa PriorityIntersection.
+Fiecare masina asteapta un timp specific pana sa incerce sa intre in intersectie.
+Daca masina are prioritate mare, intra in intersectie. Contorizez numarul de masini 
+cu prioritate din intersectie folosind un AtomicInteger, pe care il incrementez 
+cand o masina intra si il decrementez cand iese. 
+Daca nu e nicio masina cu prioritate in intersectie, folosesc notifyAll 
+pentru a notifica celelalte threaduri de acest lucru.
+In cazul masinilor cu prioritate mica, le adaug intr-o coada blocanta pentru 
+a tine minte in ce ordine au ajuns. Daca in intersectie exista masini cu prioritate mare, 
+cele cu prioritate mica sunt puse in asteptare cu wait(). Cand se elibereaza intersectia, 
+incep sa treaca, in ordinea in care au fost introduse in coada. 
+
+
+TASK 7
+Am creat clasa Crosswalk.
+Am folosit 2 variabile AtomicBoolean pentru a retine ce culoare este in prezent la semafor 
+si ce culoare a fost anterior. Daca trec pietoni, va fi rosu la masini. Daca nu, va fi verde la masini. 
+Inainte sa afisez mesajul, verific daca anterior a fost printat acelasi mesaj. Aceste operatii se 
+intampla pana cand trec toti pietonii. Dupa aceea, masinile vor mai avea inca o data verde.
+
+TASK 8
+Am creat clasa SimpleMaintenance.
+Folosesc 2 cozi blocante in care adaug masinile care vin din directia 0 sau 1 si pun o bariera ca sa 
+astept terminarea operatiei. Verific apoi daca directia din care vine masina este 0 si incep sa scot 
+masini din coada, adica vor trece masinile care vin din directia 0. Apoi, trec masini din directia 1, 
+dupa cum au fost introduse in coada. 
+
+TASK 9
+Am creat clasa ComplexMaintenance.
+Folosesc o lista de cozi blocante, in care introduc masini in functie de directia din care vin. 
+Folosesc si un semafor pentru a controla numarul maxim de masini. Masinile incep sa schimbe benzile si, 
+atunci cand semaforul nu mai are permisiuni, dar inca exista masini, aceasta e permutata la coada listei 
+de asteptare. In caz contrar, banda este golita.
+
+TASK 10
+Am creat clasa Railroad.
+Cand fiecare masina ajunge la bariera, o adaug intr-o coada blocanta pentru 
+a tine minte ordinea. Folosesc o bariera pentru ca toate masinile sa ajunga 
+la bariera pana a face alta actiune. Doar masina cu id 0(thread-ul 0) anunta 
+ca trenul a trecut. Folosesc din nou bariera pentru a astepta trecerea trenului. 
+Folosind syncronized, incep sa scot masini din coada, adica acestea incep sa 
+conduca in ordinea in care au ajuns la bariera. 
